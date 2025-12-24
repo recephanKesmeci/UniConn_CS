@@ -19,26 +19,37 @@
             <ul class="list-unstyled components">
                 @if (Session["UserID"] != null)
                 {
+                    @* 1. Home Linki *@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
                         <a href="/Home/Index"><i class="fa-solid fa-house"></i> Home</a>
                     </li>
+
+                    @* 2. Communities Linki *@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "COMMUNITIES" ? "active" : "")">
                         <a href="/COMMUNITIES/Index"><i class="fa-solid fa-users"></i> Communities</a>
                     </li>
+
+                    @* 3. Events Linki *@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "EVENTS" ? "active" : "")">
                         <a href="/EVENTS/Index"><i class="fa-solid fa-calendar-check"></i> Events</a>
                     </li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "POSTS" ? "active" : "")">
-                        <a href="/POSTS/Index"><i class="fa-solid fa-comments"></i> Posts</a>
+
+                    @* 4. Post Akışı (Az önce düzelttiğimiz Home sayfasına gider) *@
+                    <li>
+                        <a href="/Home/Index"><i class="fa-solid fa-comments"></i> Feed</a>
                     </li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "POLLS" ? "active" : "")">
-                        <a href="/POLLS/Index"><i class="fa-solid fa-square-poll-vertical"></i> Polls</a>
+
+                    @* 5. Profil Sayfası (Yeni eklediğimiz Controller) *@
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Profile" ? "active" : "")">
+                        <a href="/Profile/Index"><i class="fa-solid fa-user"></i> Profile</a>
                     </li>
+
+                    @* 6. Settings Sayfası *@
+          
                 }
                 else
                 {
                     <li><a href="/Account/Login"><i class="fa-solid fa-right-to-bracket"></i> Giriş Yap</a></li>
-                    <li><a href="/Account/Register"><i class="fa-solid fa-user-plus"></i> Kayıt Ol</a></li>
                 }
             </ul>
         </nav>

@@ -1,33 +1,61 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<UniConn_CS.Models.POST>
+@{
+    ViewBag.Title = "Home Feed";
+    var communities = ViewBag.Communities as List<UniConn_CS.Models.COMMUNITY>;
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<div class="row">
+    <div class="col-md-8">
+        <div class="custom-card mb-4 shadow-sm border-0" style="background: #fff; border-radius: 15px;">
+            <div class="p-3">
+                @using (Html.BeginForm("Create", "POSTS", FormMethod.Post))
+                {
+                    <textarea name="content" class="form-control border-0 bg-light" rows="2" placeholder="Share something..." style="resize:none; border-radius: 10px;" required></textarea>
+                    <div class="text-end mt-2">
+                        <button type="submit" class="btn btn-dark px-4 rounded-pill shadow-sm" style="background: #1e1e2f;">Post</button>
+                    </div>
+                }
+            </div>
+        </div>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+        @foreach (var post in Model)
+        {
+            <div class="custom-card mb-3 shadow-sm border-0" style="background: #fff; border-radius: 15px;">
+                <div class="p-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="profile-pic-small bg-primary text-white me-2">
+                            @* STUDENTS ilişkisi üzerinden ilk harfi alıyoruz *@
+                            @(post.STUDENTS != null ? post.STUDENTS.first_name.Substring(0,1) : "U")
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">
+                                @(post.STUDENTS != null ? post.STUDENTS.first_name + " " + post.STUDENTS.last_name : "Anonymous")
+                            </h6>
+                            @* student_id yerine creator_student_id kullanıyoruz *@
+                            <small class="text-muted">ID: @post.creator_student_id</small>
+                        </div>
+                    </div>
+                    <p class="mb-0" style="color: #444;">@post.content</p>
+                </div>
+            </div>
+        }
     </div>
-</main>
+
+    <div class="col-md-4">
+        <div class="custom-card mb-4 shadow-sm border-0" style="background: #fff; border-radius: 15px;">
+            <div class="p-3">
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Discover Communities</h6>
+                @if (communities != null)
+                {
+                    foreach (var com in communities)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span style="font-size: 0.9rem;"><i class="fa-solid fa-users text-warning me-2"></i> @com.description</span>
+                            <a href="/COMMUNITIES/Details/@com.community_name" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-0">Visit</a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

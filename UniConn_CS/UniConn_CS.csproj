@@ -139,6 +139,7 @@
     <Compile Include="Controllers\POLLsController.cs" />
     <Compile Include="Controllers\POLL_OPTIONController.cs" />
     <Compile Include="Controllers\POSTsController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ROLEsController.cs" />
     <Compile Include="Controllers\STUDENTSController.cs" />
     <Compile Include="Controllers\VOTEsController.cs" />
@@ -312,6 +313,7 @@
     <Content Include="Views\COMMUNITY_ROLE_ASSIGNMENT\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
