@@ -1,0 +1,58 @@
+﻿@model UniConn_CS.Models.STUDENTS
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>STUDENTS</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.first_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.last_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.institutional_email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institutional_email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.registration_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.registration_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.student_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

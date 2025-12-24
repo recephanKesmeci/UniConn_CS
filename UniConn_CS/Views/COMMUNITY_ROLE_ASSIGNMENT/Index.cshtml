@@ -1,0 +1,51 @@
+﻿@model IEnumerable<UniConn_CS.Models.COMMUNITY_ROLE_ASSIGNMENT>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.assigned_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.STUDENTS.first_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.STUDENTS1.first_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ROLE.role_description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.assigned_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.STUDENTS.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.STUDENTS1.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ROLE.role_description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,42 @@
+﻿@model UniConn_CS.Models.POLL_OPTION
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>POLL_OPTION</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.vote_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vote_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.option_text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.option_text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.POLL.poll_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.POLL.poll_title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.poll_option_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,33 @@
+﻿@{ Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Giriş Yap</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body class="login-body">
+    <div class="login-card text-center">
+        <h2 class="mb-4 fw-bold">UNI<span style="color:#ff9800;">CONN</span></h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger p-2 small">@ViewBag.Error</div>
+        }
+
+        <form action="/Account/Login" method="post">
+            <input type="email" name="email" class="login-input form-control" placeholder="Email Adresi" required />
+            <input type="password" name="password" class="login-input form-control" placeholder="Şifre" required />
+
+            <button type="submit" class="btn-login mt-3">Giriş Yap</button>
+        </form>
+
+        <div class="mt-4">
+            <p class="small text-white-50">Hesabın yok mu?</p>
+            <a href="/Account/Register" class="text-warning fw-bold small">Hemen Kayıt Ol</a>
+        </div>
+    </div>
+</body>
+</html>

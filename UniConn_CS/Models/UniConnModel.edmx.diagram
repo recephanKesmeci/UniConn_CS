@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="37936b4d1e954b5aaefd57681f61dccd" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="UniConnDBModel.COMMUNITY" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.COMMUNITY_MEMBERSHIP" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.COMMUNITY_ROLE_ASSIGNMENT" Width="1.5" PointX="6" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.EVENTS" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.POLL" Width="1.5" PointX="8.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.POLL_OPTION" Width="1.5" PointX="10.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.POST" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.ROLE" Width="1.5" PointX="3.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.STUDENTS" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="UniConnDBModel.VOTE" Width="1.5" PointX="13" PointY="4.5" IsExpanded="true" />
+        <AssociationConnector Association="UniConnDBModel.FK__COMMUNITY__commu__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__EVENTS__communit__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POST__community___571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__ROLE__community___5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__COMMUNITY__stude__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__COMMUNITY__assig__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__COMMUNITY__stude__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__COMMUNITY_ROLE_A__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__EVENTS__creator___5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POST__event_refe__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POLL__poll_creat__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POLL__post_id__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POLL_OPTI__poll___5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__VOTE__poll_id__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__VOTE__poll_optio__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__POST__creator_st__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="UniConnDBModel.FK__VOTE__student_id__6383C8BA" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,74 @@
+﻿@model UniConn_CS.Models.POST
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>POST</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.creation_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creation_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image_url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.image_url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.COMMUNITY.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.COMMUNITY.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EVENTS.event_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EVENTS.event_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STUDENTS.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STUDENTS.first_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.post_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

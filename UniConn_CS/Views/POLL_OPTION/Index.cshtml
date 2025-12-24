@@ -1,0 +1,45 @@
+﻿@model IEnumerable<UniConn_CS.Models.POLL_OPTION>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.vote_count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.option_text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.POLL.poll_title)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.vote_count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.option_text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.POLL.poll_title)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.poll_option_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.poll_option_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.poll_option_id })
+        </td>
+    </tr>
+}
+
+</table>

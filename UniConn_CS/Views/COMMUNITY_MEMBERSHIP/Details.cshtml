@@ -1,0 +1,50 @@
+﻿@model UniConn_CS.Models.COMMUNITY_MEMBERSHIP
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>COMMUNITY_MEMBERSHIP</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.join_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.join_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.COMMUNITY.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.COMMUNITY.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STUDENTS.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STUDENTS.first_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

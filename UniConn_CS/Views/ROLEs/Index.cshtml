@@ -1,0 +1,63 @@
+﻿@model IEnumerable<UniConn_CS.Models.ROLE>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.role_description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_allowed_to_vote)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.can_remove_add_members)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.can_create_events)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.can_participate_in_polls)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.COMMUNITY.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.role_description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_allowed_to_vote)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.can_remove_add_members)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.can_create_events)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.can_participate_in_polls)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.COMMUNITY.description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

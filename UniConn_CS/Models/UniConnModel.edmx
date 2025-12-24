@@ -1,0 +1,985 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UniConnDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="COMMUNITY">
+          <Key>
+            <PropertyRef Name="community_name" />
+          </Key>
+          <Property Name="community_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="creation_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COMMUNITY_MEMBERSHIP">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="community_name" />
+          </Key>
+          <Property Name="student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="community_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="join_date" Type="date" Nullable="false" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="COMMUNITY_ROLE_ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="community_name" />
+            <PropertyRef Name="role_title" />
+          </Key>
+          <Property Name="student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="community_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="role_title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="assigned_by" Type="varchar" MaxLength="20" />
+          <Property Name="assigned_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENTS">
+          <Key>
+            <PropertyRef Name="event_id" />
+          </Key>
+          <Property Name="event_id" Type="int" Nullable="false" />
+          <Property Name="event_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="event_date" Type="date" Nullable="false" />
+          <Property Name="location" Type="varchar" MaxLength="200" />
+          <Property Name="community_name" Type="varchar" MaxLength="100" />
+          <Property Name="creator_student_id" Type="varchar" MaxLength="20" />
+          <Property Name="creation_date" Type="date" Nullable="false" />
+          <Property Name="is_archived" Type="bit" />
+        </EntityType>
+        <EntityType Name="POLL">
+          <Key>
+            <PropertyRef Name="poll_id" />
+          </Key>
+          <Property Name="poll_id" Type="int" Nullable="false" />
+          <Property Name="poll_title" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="poll_creator_student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="creation_date" Type="date" Nullable="false" />
+          <Property Name="post_id" Type="int" />
+        </EntityType>
+        <EntityType Name="POLL_OPTION">
+          <Key>
+            <PropertyRef Name="poll_option_id" />
+          </Key>
+          <Property Name="poll_option_id" Type="int" Nullable="false" />
+          <Property Name="poll_id" Type="int" Nullable="false" />
+          <Property Name="vote_count" Type="int" Nullable="false" />
+          <Property Name="option_text" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="POST">
+          <Key>
+            <PropertyRef Name="post_id" />
+          </Key>
+          <Property Name="post_id" Type="int" Nullable="false" />
+          <Property Name="community_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="creator_student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="creation_date" Type="date" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="content" Type="text" />
+          <Property Name="image_url" Type="varchar" MaxLength="255" />
+          <Property Name="event_reference_id" Type="int" />
+        </EntityType>
+        <EntityType Name="ROLE">
+          <Key>
+            <PropertyRef Name="community_name" />
+            <PropertyRef Name="role_title" />
+          </Key>
+          <Property Name="community_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="role_title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="role_description" Type="text" />
+          <Property Name="is_allowed_to_vote" Type="bit" />
+          <Property Name="can_remove_add_members" Type="bit" />
+          <Property Name="can_create_events" Type="bit" />
+          <Property Name="can_participate_in_polls" Type="bit" />
+        </EntityType>
+        <EntityType Name="STUDENTS">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="institutional_email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="registration_date" Type="date" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="VOTE">
+          <Key>
+            <PropertyRef Name="poll_id" />
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="poll_id" Type="int" Nullable="false" />
+          <Property Name="student_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="poll_option_id" Type="int" Nullable="false" />
+          <Property Name="vote_date" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__COMMUNITY__assig__6D0D32F4">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="0..1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="assigned_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__commu__68487DD7">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="COMMUNITY_MEMBERSHIP" Type="Self.COMMUNITY_MEMBERSHIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="COMMUNITY_MEMBERSHIP">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__stude__6754599E">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="COMMUNITY_MEMBERSHIP" Type="Self.COMMUNITY_MEMBERSHIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_MEMBERSHIP">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__stude__6B24EA82">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY_ROLE_A__6C190EBB">
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLE">
+              <PropertyRef Name="community_name" />
+              <PropertyRef Name="role_title" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="community_name" />
+              <PropertyRef Name="role_title" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EVENTS__communit__534D60F1">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="0..1" />
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="EVENTS">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EVENTS__creator___5441852A">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="0..1" />
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="EVENTS">
+              <PropertyRef Name="creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL__poll_creat__5BE2A6F2">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="POLL" Type="Self.POLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="POLL">
+              <PropertyRef Name="poll_creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL__post_id__5CD6CB2B">
+          <End Role="POST" Type="Self.POST" Multiplicity="0..1" />
+          <End Role="POLL" Type="Self.POLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POST">
+              <PropertyRef Name="post_id" />
+            </Principal>
+            <Dependent Role="POLL">
+              <PropertyRef Name="post_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL_OPTI__poll___5FB337D6">
+          <End Role="POLL" Type="Self.POLL" Multiplicity="1" />
+          <End Role="POLL_OPTION" Type="Self.POLL_OPTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="POLL_OPTION">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__community___571DF1D5">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__creator_st__5812160E">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__event_refe__59063A47">
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="0..1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTS">
+              <PropertyRef Name="event_id" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="event_reference_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ROLE__community___5070F446">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="ROLE">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__poll_id__628FA481">
+          <End Role="POLL" Type="Self.POLL" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__poll_optio__6477ECF3">
+          <End Role="POLL_OPTION" Type="Self.POLL_OPTION" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL_OPTION">
+              <PropertyRef Name="poll_option_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="poll_option_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__student_id__6383C8BA">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UniConnDBModelStoreContainer">
+          <EntitySet Name="COMMUNITY" EntityType="Self.COMMUNITY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COMMUNITY_MEMBERSHIP" EntityType="Self.COMMUNITY_MEMBERSHIP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COMMUNITY_ROLE_ASSIGNMENT" EntityType="Self.COMMUNITY_ROLE_ASSIGNMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENTS" EntityType="Self.EVENTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="POLL" EntityType="Self.POLL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="POLL_OPTION" EntityType="Self.POLL_OPTION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="POST" EntityType="Self.POST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STUDENTS" EntityType="Self.STUDENTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VOTE" EntityType="Self.VOTE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__COMMUNITY__assig__6D0D32F4" Association="Self.FK__COMMUNITY__assig__6D0D32F4">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__commu__68487DD7" Association="Self.FK__COMMUNITY__commu__68487DD7">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="COMMUNITY_MEMBERSHIP" EntitySet="COMMUNITY_MEMBERSHIP" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__stude__6754599E" Association="Self.FK__COMMUNITY__stude__6754599E">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_MEMBERSHIP" EntitySet="COMMUNITY_MEMBERSHIP" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__stude__6B24EA82" Association="Self.FK__COMMUNITY__stude__6B24EA82">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY_ROLE_A__6C190EBB" Association="Self.FK__COMMUNITY_ROLE_A__6C190EBB">
+            <End Role="ROLE" EntitySet="ROLE" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EVENTS__communit__534D60F1" Association="Self.FK__EVENTS__communit__534D60F1">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="EVENTS" EntitySet="EVENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EVENTS__creator___5441852A" Association="Self.FK__EVENTS__creator___5441852A">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="EVENTS" EntitySet="EVENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL__poll_creat__5BE2A6F2" Association="Self.FK__POLL__poll_creat__5BE2A6F2">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="POLL" EntitySet="POLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL__post_id__5CD6CB2B" Association="Self.FK__POLL__post_id__5CD6CB2B">
+            <End Role="POST" EntitySet="POST" />
+            <End Role="POLL" EntitySet="POLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL_OPTI__poll___5FB337D6" Association="Self.FK__POLL_OPTI__poll___5FB337D6">
+            <End Role="POLL" EntitySet="POLL" />
+            <End Role="POLL_OPTION" EntitySet="POLL_OPTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__community___571DF1D5" Association="Self.FK__POST__community___571DF1D5">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__creator_st__5812160E" Association="Self.FK__POST__creator_st__5812160E">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__event_refe__59063A47" Association="Self.FK__POST__event_refe__59063A47">
+            <End Role="EVENTS" EntitySet="EVENTS" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ROLE__community___5070F446" Association="Self.FK__ROLE__community___5070F446">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="ROLE" EntitySet="ROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__poll_id__628FA481" Association="Self.FK__VOTE__poll_id__628FA481">
+            <End Role="POLL" EntitySet="POLL" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__poll_optio__6477ECF3" Association="Self.FK__VOTE__poll_optio__6477ECF3">
+            <End Role="POLL_OPTION" EntitySet="POLL_OPTION" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__student_id__6383C8BA" Association="Self.FK__VOTE__student_id__6383C8BA">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UniConnDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="COMMUNITY">
+          <Key>
+            <PropertyRef Name="community_name" />
+          </Key>
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="COMMUNITY_MEMBERSHIP" Relationship="Self.FK__COMMUNITY__commu__68487DD7" FromRole="COMMUNITY" ToRole="COMMUNITY_MEMBERSHIP" />
+          <NavigationProperty Name="EVENTS" Relationship="Self.FK__EVENTS__communit__534D60F1" FromRole="COMMUNITY" ToRole="EVENTS" />
+          <NavigationProperty Name="POST" Relationship="Self.FK__POST__community___571DF1D5" FromRole="COMMUNITY" ToRole="POST" />
+          <NavigationProperty Name="ROLE" Relationship="Self.FK__ROLE__community___5070F446" FromRole="COMMUNITY" ToRole="ROLE" />
+        </EntityType>
+        <EntityType Name="COMMUNITY_MEMBERSHIP">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="community_name" />
+          </Key>
+          <Property Name="student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="join_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="is_active" Type="Boolean" />
+          <NavigationProperty Name="COMMUNITY" Relationship="Self.FK__COMMUNITY__commu__68487DD7" FromRole="COMMUNITY_MEMBERSHIP" ToRole="COMMUNITY" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__COMMUNITY__stude__6754599E" FromRole="COMMUNITY_MEMBERSHIP" ToRole="STUDENTS" />
+        </EntityType>
+        <EntityType Name="COMMUNITY_ROLE_ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="community_name" />
+            <PropertyRef Name="role_title" />
+          </Key>
+          <Property Name="student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role_title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="assigned_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="assigned_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__COMMUNITY__assig__6D0D32F4" FromRole="COMMUNITY_ROLE_ASSIGNMENT" ToRole="STUDENTS" />
+          <NavigationProperty Name="STUDENTS1" Relationship="Self.FK__COMMUNITY__stude__6B24EA82" FromRole="COMMUNITY_ROLE_ASSIGNMENT" ToRole="STUDENTS" />
+          <NavigationProperty Name="ROLE" Relationship="Self.FK__COMMUNITY_ROLE_A__6C190EBB" FromRole="COMMUNITY_ROLE_ASSIGNMENT" ToRole="ROLE" />
+        </EntityType>
+        <EntityType Name="EVENTS">
+          <Key>
+            <PropertyRef Name="event_id" />
+          </Key>
+          <Property Name="event_id" Type="Int32" Nullable="false" />
+          <Property Name="event_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="event_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="location" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="creator_student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="is_archived" Type="Boolean" />
+          <NavigationProperty Name="COMMUNITY" Relationship="Self.FK__EVENTS__communit__534D60F1" FromRole="EVENTS" ToRole="COMMUNITY" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__EVENTS__creator___5441852A" FromRole="EVENTS" ToRole="STUDENTS" />
+          <NavigationProperty Name="POST" Relationship="Self.FK__POST__event_refe__59063A47" FromRole="EVENTS" ToRole="POST" />
+        </EntityType>
+        <EntityType Name="POLL">
+          <Key>
+            <PropertyRef Name="poll_id" />
+          </Key>
+          <Property Name="poll_id" Type="Int32" Nullable="false" />
+          <Property Name="poll_title" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="poll_creator_student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="post_id" Type="Int32" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__POLL__poll_creat__5BE2A6F2" FromRole="POLL" ToRole="STUDENTS" />
+          <NavigationProperty Name="POST" Relationship="Self.FK__POLL__post_id__5CD6CB2B" FromRole="POLL" ToRole="POST" />
+          <NavigationProperty Name="POLL_OPTION" Relationship="Self.FK__POLL_OPTI__poll___5FB337D6" FromRole="POLL" ToRole="POLL_OPTION" />
+          <NavigationProperty Name="VOTE" Relationship="Self.FK__VOTE__poll_id__628FA481" FromRole="POLL" ToRole="VOTE" />
+        </EntityType>
+        <EntityType Name="POLL_OPTION">
+          <Key>
+            <PropertyRef Name="poll_option_id" />
+          </Key>
+          <Property Name="poll_option_id" Type="Int32" Nullable="false" />
+          <Property Name="poll_id" Type="Int32" Nullable="false" />
+          <Property Name="vote_count" Type="Int32" Nullable="false" />
+          <Property Name="option_text" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="POLL" Relationship="Self.FK__POLL_OPTI__poll___5FB337D6" FromRole="POLL_OPTION" ToRole="POLL" />
+          <NavigationProperty Name="VOTE" Relationship="Self.FK__VOTE__poll_optio__6477ECF3" FromRole="POLL_OPTION" ToRole="VOTE" />
+        </EntityType>
+        <EntityType Name="POST">
+          <Key>
+            <PropertyRef Name="post_id" />
+          </Key>
+          <Property Name="post_id" Type="Int32" Nullable="false" />
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creator_student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="image_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="event_reference_id" Type="Int32" />
+          <NavigationProperty Name="COMMUNITY" Relationship="Self.FK__POST__community___571DF1D5" FromRole="POST" ToRole="COMMUNITY" />
+          <NavigationProperty Name="EVENTS" Relationship="Self.FK__POST__event_refe__59063A47" FromRole="POST" ToRole="EVENTS" />
+          <NavigationProperty Name="POLL" Relationship="Self.FK__POLL__post_id__5CD6CB2B" FromRole="POST" ToRole="POLL" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__POST__creator_st__5812160E" FromRole="POST" ToRole="STUDENTS" />
+        </EntityType>
+        <EntityType Name="ROLE">
+          <Key>
+            <PropertyRef Name="community_name" />
+            <PropertyRef Name="role_title" />
+          </Key>
+          <Property Name="community_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role_title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="is_allowed_to_vote" Type="Boolean" />
+          <Property Name="can_remove_add_members" Type="Boolean" />
+          <Property Name="can_create_events" Type="Boolean" />
+          <Property Name="can_participate_in_polls" Type="Boolean" />
+          <NavigationProperty Name="COMMUNITY" Relationship="Self.FK__ROLE__community___5070F446" FromRole="ROLE" ToRole="COMMUNITY" />
+          <NavigationProperty Name="COMMUNITY_ROLE_ASSIGNMENT" Relationship="Self.FK__COMMUNITY_ROLE_A__6C190EBB" FromRole="ROLE" ToRole="COMMUNITY_ROLE_ASSIGNMENT" />
+        </EntityType>
+        <EntityType Name="STUDENTS">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="institutional_email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="registration_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="COMMUNITY_MEMBERSHIP" Relationship="Self.FK__COMMUNITY__stude__6754599E" FromRole="STUDENTS" ToRole="COMMUNITY_MEMBERSHIP" />
+          <NavigationProperty Name="COMMUNITY_ROLE_ASSIGNMENT" Relationship="Self.FK__COMMUNITY__assig__6D0D32F4" FromRole="STUDENTS" ToRole="COMMUNITY_ROLE_ASSIGNMENT" />
+          <NavigationProperty Name="COMMUNITY_ROLE_ASSIGNMENT1" Relationship="Self.FK__COMMUNITY__stude__6B24EA82" FromRole="STUDENTS" ToRole="COMMUNITY_ROLE_ASSIGNMENT" />
+          <NavigationProperty Name="EVENTS" Relationship="Self.FK__EVENTS__creator___5441852A" FromRole="STUDENTS" ToRole="EVENTS" />
+          <NavigationProperty Name="POLL" Relationship="Self.FK__POLL__poll_creat__5BE2A6F2" FromRole="STUDENTS" ToRole="POLL" />
+          <NavigationProperty Name="POST" Relationship="Self.FK__POST__creator_st__5812160E" FromRole="STUDENTS" ToRole="POST" />
+          <NavigationProperty Name="VOTE" Relationship="Self.FK__VOTE__student_id__6383C8BA" FromRole="STUDENTS" ToRole="VOTE" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VOTE">
+          <Key>
+            <PropertyRef Name="poll_id" />
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="poll_id" Type="Int32" Nullable="false" />
+          <Property Name="student_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="poll_option_id" Type="Int32" Nullable="false" />
+          <Property Name="vote_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="POLL" Relationship="Self.FK__VOTE__poll_id__628FA481" FromRole="VOTE" ToRole="POLL" />
+          <NavigationProperty Name="POLL_OPTION" Relationship="Self.FK__VOTE__poll_optio__6477ECF3" FromRole="VOTE" ToRole="POLL_OPTION" />
+          <NavigationProperty Name="STUDENTS" Relationship="Self.FK__VOTE__student_id__6383C8BA" FromRole="VOTE" ToRole="STUDENTS" />
+        </EntityType>
+        <Association Name="FK__COMMUNITY__commu__68487DD7">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="COMMUNITY_MEMBERSHIP" Type="Self.COMMUNITY_MEMBERSHIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="COMMUNITY_MEMBERSHIP">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EVENTS__communit__534D60F1">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="0..1" />
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="EVENTS">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__community___571DF1D5">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ROLE__community___5070F446">
+          <End Role="COMMUNITY" Type="Self.COMMUNITY" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMMUNITY">
+              <PropertyRef Name="community_name" />
+            </Principal>
+            <Dependent Role="ROLE">
+              <PropertyRef Name="community_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__stude__6754599E">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="COMMUNITY_MEMBERSHIP" Type="Self.COMMUNITY_MEMBERSHIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_MEMBERSHIP">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__assig__6D0D32F4">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="0..1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="assigned_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY__stude__6B24EA82">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__COMMUNITY_ROLE_A__6C190EBB">
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="COMMUNITY_ROLE_ASSIGNMENT" Type="Self.COMMUNITY_ROLE_ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLE">
+              <PropertyRef Name="community_name" />
+              <PropertyRef Name="role_title" />
+            </Principal>
+            <Dependent Role="COMMUNITY_ROLE_ASSIGNMENT">
+              <PropertyRef Name="community_name" />
+              <PropertyRef Name="role_title" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EVENTS__creator___5441852A">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="0..1" />
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="EVENTS">
+              <PropertyRef Name="creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__event_refe__59063A47">
+          <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="0..1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTS">
+              <PropertyRef Name="event_id" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="event_reference_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL__poll_creat__5BE2A6F2">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="POLL" Type="Self.POLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="POLL">
+              <PropertyRef Name="poll_creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL__post_id__5CD6CB2B">
+          <End Role="POST" Type="Self.POST" Multiplicity="0..1" />
+          <End Role="POLL" Type="Self.POLL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POST">
+              <PropertyRef Name="post_id" />
+            </Principal>
+            <Dependent Role="POLL">
+              <PropertyRef Name="post_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POLL_OPTI__poll___5FB337D6">
+          <End Role="POLL" Type="Self.POLL" Multiplicity="1" />
+          <End Role="POLL_OPTION" Type="Self.POLL_OPTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="POLL_OPTION">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__poll_id__628FA481">
+          <End Role="POLL" Type="Self.POLL" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__poll_optio__6477ECF3">
+          <End Role="POLL_OPTION" Type="Self.POLL_OPTION" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POLL_OPTION">
+              <PropertyRef Name="poll_option_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="poll_option_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__POST__creator_st__5812160E">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="creator_student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VOTE__student_id__6383C8BA">
+          <End Role="STUDENTS" Type="Self.STUDENTS" Multiplicity="1" />
+          <End Role="VOTE" Type="Self.VOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENTS">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="VOTE">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UniConnDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="COMMUNITY" EntityType="Self.COMMUNITY" />
+          <EntitySet Name="COMMUNITY_MEMBERSHIP" EntityType="Self.COMMUNITY_MEMBERSHIP" />
+          <EntitySet Name="COMMUNITY_ROLE_ASSIGNMENT" EntityType="Self.COMMUNITY_ROLE_ASSIGNMENT" />
+          <EntitySet Name="EVENTS" EntityType="Self.EVENTS" />
+          <EntitySet Name="POLL" EntityType="Self.POLL" />
+          <EntitySet Name="POLL_OPTION" EntityType="Self.POLL_OPTION" />
+          <EntitySet Name="POST" EntityType="Self.POST" />
+          <EntitySet Name="ROLE" EntityType="Self.ROLE" />
+          <EntitySet Name="STUDENTS" EntityType="Self.STUDENTS" />
+          <EntitySet Name="VOTE" EntityType="Self.VOTE" />
+          <AssociationSet Name="FK__COMMUNITY__commu__68487DD7" Association="Self.FK__COMMUNITY__commu__68487DD7">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="COMMUNITY_MEMBERSHIP" EntitySet="COMMUNITY_MEMBERSHIP" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EVENTS__communit__534D60F1" Association="Self.FK__EVENTS__communit__534D60F1">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="EVENTS" EntitySet="EVENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__community___571DF1D5" Association="Self.FK__POST__community___571DF1D5">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ROLE__community___5070F446" Association="Self.FK__ROLE__community___5070F446">
+            <End Role="COMMUNITY" EntitySet="COMMUNITY" />
+            <End Role="ROLE" EntitySet="ROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__stude__6754599E" Association="Self.FK__COMMUNITY__stude__6754599E">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_MEMBERSHIP" EntitySet="COMMUNITY_MEMBERSHIP" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__assig__6D0D32F4" Association="Self.FK__COMMUNITY__assig__6D0D32F4">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY__stude__6B24EA82" Association="Self.FK__COMMUNITY__stude__6B24EA82">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__COMMUNITY_ROLE_A__6C190EBB" Association="Self.FK__COMMUNITY_ROLE_A__6C190EBB">
+            <End Role="ROLE" EntitySet="ROLE" />
+            <End Role="COMMUNITY_ROLE_ASSIGNMENT" EntitySet="COMMUNITY_ROLE_ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EVENTS__creator___5441852A" Association="Self.FK__EVENTS__creator___5441852A">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="EVENTS" EntitySet="EVENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__event_refe__59063A47" Association="Self.FK__POST__event_refe__59063A47">
+            <End Role="EVENTS" EntitySet="EVENTS" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL__poll_creat__5BE2A6F2" Association="Self.FK__POLL__poll_creat__5BE2A6F2">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="POLL" EntitySet="POLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL__post_id__5CD6CB2B" Association="Self.FK__POLL__post_id__5CD6CB2B">
+            <End Role="POST" EntitySet="POST" />
+            <End Role="POLL" EntitySet="POLL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POLL_OPTI__poll___5FB337D6" Association="Self.FK__POLL_OPTI__poll___5FB337D6">
+            <End Role="POLL" EntitySet="POLL" />
+            <End Role="POLL_OPTION" EntitySet="POLL_OPTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__poll_id__628FA481" Association="Self.FK__VOTE__poll_id__628FA481">
+            <End Role="POLL" EntitySet="POLL" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__poll_optio__6477ECF3" Association="Self.FK__VOTE__poll_optio__6477ECF3">
+            <End Role="POLL_OPTION" EntitySet="POLL_OPTION" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__POST__creator_st__5812160E" Association="Self.FK__POST__creator_st__5812160E">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VOTE__student_id__6383C8BA" Association="Self.FK__VOTE__student_id__6383C8BA">
+            <End Role="STUDENTS" EntitySet="STUDENTS" />
+            <End Role="VOTE" EntitySet="VOTE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UniConnDBModelStoreContainer" CdmEntityContainer="UniConnDBEntities">
+          <EntitySetMapping Name="COMMUNITY">
+            <EntityTypeMapping TypeName="UniConnDBModel.COMMUNITY">
+              <MappingFragment StoreEntitySet="COMMUNITY">
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COMMUNITY_MEMBERSHIP">
+            <EntityTypeMapping TypeName="UniConnDBModel.COMMUNITY_MEMBERSHIP">
+              <MappingFragment StoreEntitySet="COMMUNITY_MEMBERSHIP">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="join_date" ColumnName="join_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COMMUNITY_ROLE_ASSIGNMENT">
+            <EntityTypeMapping TypeName="UniConnDBModel.COMMUNITY_ROLE_ASSIGNMENT">
+              <MappingFragment StoreEntitySet="COMMUNITY_ROLE_ASSIGNMENT">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="role_title" ColumnName="role_title" />
+                <ScalarProperty Name="assigned_by" ColumnName="assigned_by" />
+                <ScalarProperty Name="assigned_date" ColumnName="assigned_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENTS">
+            <EntityTypeMapping TypeName="UniConnDBModel.EVENTS">
+              <MappingFragment StoreEntitySet="EVENTS">
+                <ScalarProperty Name="event_id" ColumnName="event_id" />
+                <ScalarProperty Name="event_name" ColumnName="event_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="event_date" ColumnName="event_date" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="creator_student_id" ColumnName="creator_student_id" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="is_archived" ColumnName="is_archived" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="POLL">
+            <EntityTypeMapping TypeName="UniConnDBModel.POLL">
+              <MappingFragment StoreEntitySet="POLL">
+                <ScalarProperty Name="poll_id" ColumnName="poll_id" />
+                <ScalarProperty Name="poll_title" ColumnName="poll_title" />
+                <ScalarProperty Name="poll_creator_student_id" ColumnName="poll_creator_student_id" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="post_id" ColumnName="post_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="POLL_OPTION">
+            <EntityTypeMapping TypeName="UniConnDBModel.POLL_OPTION">
+              <MappingFragment StoreEntitySet="POLL_OPTION">
+                <ScalarProperty Name="poll_option_id" ColumnName="poll_option_id" />
+                <ScalarProperty Name="poll_id" ColumnName="poll_id" />
+                <ScalarProperty Name="vote_count" ColumnName="vote_count" />
+                <ScalarProperty Name="option_text" ColumnName="option_text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="POST">
+            <EntityTypeMapping TypeName="UniConnDBModel.POST">
+              <MappingFragment StoreEntitySet="POST">
+                <ScalarProperty Name="post_id" ColumnName="post_id" />
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="creator_student_id" ColumnName="creator_student_id" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
+                <ScalarProperty Name="event_reference_id" ColumnName="event_reference_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLE">
+            <EntityTypeMapping TypeName="UniConnDBModel.ROLE">
+              <MappingFragment StoreEntitySet="ROLE">
+                <ScalarProperty Name="community_name" ColumnName="community_name" />
+                <ScalarProperty Name="role_title" ColumnName="role_title" />
+                <ScalarProperty Name="role_description" ColumnName="role_description" />
+                <ScalarProperty Name="is_allowed_to_vote" ColumnName="is_allowed_to_vote" />
+                <ScalarProperty Name="can_remove_add_members" ColumnName="can_remove_add_members" />
+                <ScalarProperty Name="can_create_events" ColumnName="can_create_events" />
+                <ScalarProperty Name="can_participate_in_polls" ColumnName="can_participate_in_polls" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STUDENTS">
+            <EntityTypeMapping TypeName="UniConnDBModel.STUDENTS">
+              <MappingFragment StoreEntitySet="STUDENTS">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="institutional_email" ColumnName="institutional_email" />
+                <ScalarProperty Name="registration_date" ColumnName="registration_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VOTE">
+            <EntityTypeMapping TypeName="UniConnDBModel.VOTE">
+              <MappingFragment StoreEntitySet="VOTE">
+                <ScalarProperty Name="poll_id" ColumnName="poll_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="poll_option_id" ColumnName="poll_option_id" />
+                <ScalarProperty Name="vote_date" ColumnName="vote_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

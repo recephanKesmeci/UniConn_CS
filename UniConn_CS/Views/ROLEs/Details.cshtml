@@ -1,0 +1,66 @@
+﻿@model UniConn_CS.Models.ROLE
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ROLE</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.role_description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.role_description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_allowed_to_vote)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_allowed_to_vote)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.can_remove_add_members)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.can_remove_add_members)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.can_create_events)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.can_create_events)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.can_participate_in_polls)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.can_participate_in_polls)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.COMMUNITY.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.COMMUNITY.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

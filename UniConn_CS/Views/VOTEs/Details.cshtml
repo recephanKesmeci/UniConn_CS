@@ -1,0 +1,50 @@
+﻿@model UniConn_CS.Models.VOTE
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>VOTE</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.vote_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vote_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.POLL.poll_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.POLL.poll_title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.POLL_OPTION.option_text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.POLL_OPTION.option_text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STUDENTS.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STUDENTS.first_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

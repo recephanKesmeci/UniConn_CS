@@ -1,0 +1,51 @@
+﻿@model IEnumerable<UniConn_CS.Models.VOTE>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.vote_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.POLL.poll_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.POLL_OPTION.option_text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.STUDENTS.first_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.vote_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.POLL.poll_title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.POLL_OPTION.option_text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.STUDENTS.first_name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
