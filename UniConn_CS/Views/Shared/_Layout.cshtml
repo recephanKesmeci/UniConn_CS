@@ -34,10 +34,6 @@
                         <a href="/EVENTS/Index"><i class="fa-solid fa-calendar-check"></i> Events</a>
                     </li>
 
-                    @* 4. Post Akışı (Az önce düzelttiğimiz Home sayfasına gider) *@
-                    <li>
-                        <a href="/Home/Index"><i class="fa-solid fa-comments"></i> Feed</a>
-                    </li>
 
                     @* 5. Profil Sayfası (Yeni eklediğimiz Controller) *@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Profile" ? "active" : "")">
