@@ -1,34 +1,107 @@
 ﻿@model UniConn_CS.Models.COMMUNITY
-
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.community_name;
+    var events = ViewBag.CommunityEvents as List<UniConn_CS.Models.EVENTS>;
 }
 
-<h2>Details</h2>
+<div class="container mt-4">
+    <div class="card bg-dark border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+        <div class="card-body p-5 text-center position-relative">
+            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, rgba(106, 17, 203, 0.2) 0%, rgba(21, 21, 23, 1) 90%); z-index:0;"></div>
 
-<div>
-    <h4>COMMUNITY</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.description)
-        </dt>
+            <div style="position:relative; z-index:1;">
+                <div class="icon-box mx-auto mb-3 shadow-lg" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                    <span class="text-white fw-bold">@Model.community_name.Substring(0, 1)</span>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.description)
-        </dd>
+                <h1 class="fw-bold text-white mb-2">@Model.community_name</h1>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.creation_date)
-        </dt>
+                <div class="d-inline-flex align-items-center bg-white bg-opacity-10 px-3 py-1 rounded-pill border border-secondary border-opacity-25 mb-3">
+                    <i class="fas fa-users text-warning me-2"></i>
+                    <span class="text-white fw-bold">@(ViewBag.MemberCount ?? 0) Members</span>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.creation_date)
-        </dd>
+                <p class="text-muted fs-5 mx-auto" style="max-width: 600px;">@Model.description</p>
 
-    </dl>
+                <div class="mt-4" style="max-width: 300px; margin: 0 auto;">
+                    @if (ViewBag.IsMember != null && ViewBag.IsMember)
+                    {
+                        using (Html.BeginForm("Leave", "COMMUNITies", new { name = Model.community_name }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill fw-bold py-2" onclick="return confirm('Are you sure you want to leave?')">
+                                <i class="fas fa-sign-out-alt me-2"></i>Leave Community
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("Join", "COMMUNITies", new { name = Model.community_name }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-warning w-100 rounded-pill fw-bold text-dark shadow-warning py-2" style="background-color: #ffc107; border: none;">
+                                <i class="fas fa-plus me-2"></i>Join Now
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="text-white fw-bold mb-4 border-start border-4 border-warning ps-3">Upcoming Events</h4>
+
+    @if (events != null && events.Any())
+    {
+        <div class="row">
+            @foreach (var item in events)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card bg-dark border border-secondary h-100 rounded-4 shadow-sm hover-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="fw-bold text-white mb-0">@item.event_name</h5>
+                                <span class="badge bg-info text-dark">
+                                    <i class="far fa-calendar-alt me-1"></i>
+                                    @item.event_date.ToString("dd MMM")
+                                </span>
+                            </div>
+                            <p class="text-muted small mb-3">
+                                <i class="fas fa-map-marker-alt me-1 text-danger"></i> @item.location
+                            </p>
+                            <p class="text-light opacity-75">@item.description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 border border-secondary border-dashed rounded-4">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h5 class="text-white">No upcoming events found.</h5>
+            <p class="text-muted">Check back later for new activities!</p>
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.community_name }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<style>
+    .icon-box {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hover-card:hover {
+        border-color: #ff8c00 !important;
+        transform: translateY(-3px);
+        transition: all 0.3s ease;
+    }
+
+    .shadow-warning {
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+    }
+</style>

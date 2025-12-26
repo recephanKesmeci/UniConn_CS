@@ -17,10 +17,12 @@ namespace UniConn_CS.Controllers
         // GET: POSTs
         public ActionResult Index()
         {
-            var pOST = db.POST.Include(p => p.COMMUNITY).Include(p => p.EVENTS).Include(p => p.STUDENTS);
-            return View(pOST.ToList());
-        }
+            if (Session["UserID"] == null) return RedirectToAction("Login", "Account");
 
+            // Filtresiz, tüm postları getirir = Global Feed
+            var posts = db.POST.OrderByDescending(p => p.creation_date).ToList();
+            return View(posts);
+        }
         // GET: POSTs/Details/5
         public ActionResult Details(int? id)
         {

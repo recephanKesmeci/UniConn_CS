@@ -1,37 +1,211 @@
-﻿@model UniConn_CS.Models.STUDENTS
+﻿@model UniConn_CS.Models.ProfileViewModel
 @{
-    ViewBag.Title = "Profil";
+    ViewBag.Title = "My Profile";
 }
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="custom-card text-center p-4 shadow-sm border-0" style="background: #fff; border-radius: 20px;">
-            <div style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #ff9800; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-                <i class="fa-solid fa-user fa-5x text-muted"></i>
-            </div>
-            <h3 class="fw-bold mb-0">@Model.first_name @Model.last_name</h3>
-            <p class="text-muted">ID: @Model.student_id</p>
-            <p class="text-primary fw-bold">TED University</p>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-lg text-center p-4 sticky-top profile-card" style="top: 100px;">
+                <div class="profile-glow"></div>
+                <div class="mx-auto mb-3 p-1 position-relative" style="z-index: 2; width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(45deg, #ff8c00, #6a11cb);">
+                    <img src="https://ui-avatars.com/api/?name=@Model.Student.first_name+@Model.Student.last_name&background=151517&color=fff&size=128"
+                         class="rounded-circle" alt="Profile" style="border: 4px solid #151517;">
+                </div>
 
-            <div class="d-flex justify-content-around mt-4">
-                <div><h6 class="fw-bold mb-0">12</h6><small>Comm.</small></div>
-                <div><h6 class="fw-bold mb-0">45</h6><small>Events</small></div>
-                <div class="text-warning"><h6 class="fw-bold mb-0">1250</h6><small>Points</small></div>
-            </div>
-            <button class="btn btn-outline-dark w-100 rounded-pill mt-4">Edit Profile</button>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="custom-card p-4 shadow-sm border-0 mb-4" style="background: #fff; border-radius: 20px;">
-            <h5 class="fw-bold mb-4">My Communities</h5>
-            <div class="row">
-                <div class="col-md-4 mb-2">
-                    <div class="p-3 border rounded text-center bg-light">
-                        <small class="fw-bold d-block">Robotics Society</small>
-                        <span class="badge bg-warning">ADMIN</span>
+                <h3 class="fw-bold mb-1 text-white position-relative" style="z-index: 2;">@Model.Student.first_name @Model.Student.last_name</h3>
+                <p class="text-muted small mb-2 position-relative" style="z-index: 2;">ID: @Model.Student.student_id</p>
+                <span class="badge bg-dark border border-warning text-warning mb-4 px-3 py-2 rounded-pill position-relative" style="z-index: 2;">
+                    @(Model.Student.status == "active" ? "Active Student" : "Inactive")
+                </span>
+
+                <div class="d-flex justify-content-around text-center mt-3 bg-black bg-opacity-50 p-3 rounded-4 position-relative" style="z-index: 2; border: 1px solid rgba(255,255,255,0.1);">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-white">@Model.CommunityCount</h4>
+                        <small class="text-secondary" style="font-size: 0.75rem;">COMMUNITIES</small>
+                    </div>
+                    <div style="border-left: 1px solid #333;"></div>
+                    <div>
+                        <h4 class="fw-bold mb-0 text-white">@Model.PostCount</h4>
+                        <small class="text-secondary" style="font-size: 0.75rem;">POSTS</small>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-8">
+
+            <div class="d-flex align-items-center mb-4">
+                <div class="icon-box-small me-3"><i class="fas fa-users"></i></div>
+                <h4 class="fw-bold mb-0 text-gradient">My Communities</h4>
+            </div>
+
+            @if (Model.MyCommunities.Count == 0)
+            {
+                <div class="alert alert-dark border-secondary text-center p-4 rounded-4 mb-5" style="background: rgba(21, 21, 23, 0.8);">
+                    <p class="text-muted mb-2">Henüz bir topluluğa katılmadınız.</p>
+                    <a href="/COMMUNITies/Index" class="btn btn-warning btn-sm rounded-pill px-4 text-dark fw-bold hover-glow">Explore</a>
+                </div>
+            }
+            else
+            {
+                <div class="row mb-5">
+                    @foreach (var item in Model.MyCommunities)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-0 shadow-sm h-100 item-card">
+                                <div class="card-body d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1 text-white fw-bold">@item.CommunityName</h6>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">@item.RoleTitle</span>
+                                    </div>
+
+                                    @using (Html.BeginForm("LeaveCommunity", "Profile", new { name = item.CommunityName }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle delete-btn" title="Leave Community" onclick="return confirm('Ayrılmak istediğine emin misin?')">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <div class="d-flex align-items-center mb-4">
+                <div class="icon-box-small me-3" style="background: linear-gradient(135deg, #ff8c00, #ff0080);"><i class="far fa-newspaper"></i></div>
+                <h4 class="fw-bold mb-0 text-gradient">My Activity</h4>
+            </div>
+
+            @if (Model.MyPosts.Count == 0)
+            {
+                <div class="text-center py-5 border border-secondary border-dashed rounded-4" style="background: rgba(21, 21, 23, 0.5);">
+                    <i class="far fa-paper-plane fa-2x text-muted mb-3"></i>
+                    <p class="text-muted">You haven't posted anything yet.</p>
+                </div>
+            }
+            else
+            {
+                foreach (var post in Model.MyPosts)
+                {
+                    <div class="card border-0 mb-3 shadow-sm item-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <small class="text-warning fw-bold mb-1 d-block">
+                                        <i class="fas fa-bullhorn me-1"></i> @post.community_name
+                                    </small>
+                                    <h5 class="text-white fw-bold mb-2">@post.title</h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="far fa-clock me-1"></i> @post.creation_date.ToString("dd MMM yyyy HH:mm")
+                                    </p>
+                                </div>
+
+                                @using (Html.BeginForm("DeletePost", "Profile", new { id = post.post_id }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-dark text-danger btn-sm rounded-pill px-3 delete-btn-text" onclick="return confirm('Bu gönderiyi silmek istediğine emin misin?')">
+                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                    </button>
+                                }
+                            </div>
+
+                            <p class="text-light opacity-75 mt-3 border-top border-secondary pt-3" style="border-color: rgba(255,255,255,0.1) !important;">@post.content</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
 </div>
+
+<style>
+    .profile-card {
+        background: #151517;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .item-card {
+        background: #1e1e21;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: #6a11cb;
+        }
+
+    /* Neon Animasyonu */
+    .profile-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(106,17,203,0.2) 0%, rgba(21,21,23,0) 70%);
+        animation: rotate 10s linear infinite;
+        z-index: 1;
+    }
+
+    @@keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #fff, #a0a0a0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .icon-box-small {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.4);
+    }
+
+    .delete-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        color: #dc3545;
+        transition: all 0.2s;
+    }
+
+        .delete-btn:hover {
+            background: #dc3545;
+            color: white;
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+        }
+
+    .delete-btn-text:hover {
+        background: #dc3545;
+        color: white !important;
+        box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+    }
+
+    .hover-glow:hover {
+        box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+    }
+</style>

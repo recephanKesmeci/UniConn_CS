@@ -1,36 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using UniConn_CS.Models; // Modellerine erişim için gerekli
+using UniConn_CS.Models;
+using System.Collections.Generic;
 
 namespace UniConn_CS.Controllers
 {
     public class HomeController : Controller
     {
-        // Veritabanı bağlantı ismin: UniConnDBEntities
         private UniConnDBEntities db = new UniConnDBEntities();
 
         public ActionResult Index()
         {
-            // 1. Güvenlik: Giriş yapmamış kullanıcıyı Login sayfasına atar.
+            // 1. Güvenlik: Giriş yapmamış kullanıcıyı Login'e at
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            // 2. Postları Çekme: 
-            // HATA ÇÖZÜMÜ: Tablo adın 'POSTS' değil, 'POST' (tekil).
-            // .OrderByDescending ile en yeni postun en üstte görünmesini sağlıyoruz.
-            var posts = db.POST.OrderByDescending(p => p.post_id).ToList();
+            string currentUserId = Session["UserID"].ToString();
 
-            // 3. Topluluk Önerileri: 
-            // Sağ taraftaki widget için veritabanındaki topluluklardan ilk 5 tanesini alıyoruz.
+            // 2. Kişisel Akış Mantığı:
+            // Önce kullanıcının üye olduğu (ve üyeliği aktif olan) toplulukların isimlerini çekiyoruz.
+            var myCommunityNames = db.COMMUNITY_MEMBERSHIP
+                                     .Where(m => m.student_id == currentUserId && m.is_active == true)
+                                     .Select(m => m.community_name)
+                                     .ToList();
+
+            // 3. Postları Filtreleme:
+            // Sadece bu topluluklara ait olan postları tarihe göre (yeniden eskiye) sıralayıp getiriyoruz.
+            var myFeedPosts = db.POST
+                                .Where(p => myCommunityNames.Contains(p.community_name))
+                                .OrderByDescending(p => p.creation_date)
+                                .ToList();
+
+            // 4. Sağ taraf widget'ı için topluluk önerileri (İlk 5)
             ViewBag.Communities = db.COMMUNITY.Take(5).ToList();
 
-            // 4. Görünümü döndür: Post listesini sayfaya model olarak gönderiyoruz.
-            return View(posts);
+            // Listeyi View'a gönder
+            return View(myFeedPosts);
         }
 
         public ActionResult About()
@@ -45,7 +53,6 @@ namespace UniConn_CS.Controllers
             return View();
         }
 
-        // Veritabanı bağlantısını temizle
         protected override void Dispose(bool disposing)
         {
             if (disposing)

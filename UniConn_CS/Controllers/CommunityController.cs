@@ -20,19 +20,113 @@ namespace UniConn_CS.Controllers
             return View(db.COMMUNITY.ToList());
         }
 
-        // GET: COMMUNITies/Details/5
-        public ActionResult Details(string id)
+        // ==========================================
+        // GÜNCELLENEN KISIM: Details (Name Parametresi + Veriler)
+        // ==========================================
+        // Parametre adını 'id' yerine 'name' yaptık ki '&' karakteri sorun yaratmasın.
+        public ActionResult Details(string name)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(name))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            COMMUNITY cOMMUNITY = db.COMMUNITY.Find(id);
-            if (cOMMUNITY == null)
+
+            // Topluluğu ismine göre bul
+            var community = db.COMMUNITY.Find(name);
+            if (community == null)
             {
                 return HttpNotFound();
             }
-            return View(cOMMUNITY);
+
+            // 1. Üyelik Kontrolü
+            string currentUserId = Session["UserID"]?.ToString();
+            bool isMember = false;
+            if (currentUserId != null)
+            {
+                isMember = db.COMMUNITY_MEMBERSHIP.Any(m =>
+                    m.student_id == currentUserId &&
+                    m.community_name == name &&
+                    m.is_active == true);
+            }
+            ViewBag.IsMember = isMember;
+
+            // 2. Üye Sayısını Hesapla (1).sql]
+            ViewBag.MemberCount = db.COMMUNITY_MEMBERSHIP.Count(m =>
+                m.community_name == name && m.is_active == true);
+
+            // 3. Gelecek Etkinlikleri Getir (1).sql]
+            // Arşivlenmemiş etkinlikleri tarihe göre sıralayıp View'a gönderiyoruz
+            var events = db.EVENTS
+                           .Where(e => e.community_name == name && e.is_archived == false)
+                           .OrderBy(e => e.event_date)
+                           .ToList();
+
+            ViewBag.CommunityEvents = events;
+
+            return View(community);
+        }
+
+        // ==========================================
+        // KATILMA İŞLEMİ (Join)
+        // ==========================================
+        // ==========================================
+        // GÜNCELLENEN METOTLAR: Join ve Leave (name parametresi ile)
+        // ==========================================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Join(string name) // Parametre adı 'id' yerine 'name' oldu
+        {
+            if (Session["UserID"] == null) return RedirectToAction("Login", "Account");
+
+            string userId = Session["UserID"].ToString();
+
+            // Veritabanında bu kişi ve topluluk için kayıt var mı?
+            var membership = db.COMMUNITY_MEMBERSHIP.FirstOrDefault(m => m.student_id == userId && m.community_name == name);
+
+            if (membership != null)
+            {
+                // Kayıt varsa (daha önce çıkmışsa bile) tekrar aktif yap
+                membership.is_active = true;
+                membership.join_date = DateTime.Now;
+            }
+            else
+            {
+                // Hiç kaydı yoksa sıfırdan oluştur
+                var newMember = new COMMUNITY_MEMBERSHIP
+                {
+                    student_id = userId,
+                    community_name = name,
+                    join_date = DateTime.Now,
+                    is_active = true
+                };
+                db.COMMUNITY_MEMBERSHIP.Add(newMember);
+            }
+
+            db.SaveChanges();
+
+            // İşlem bitince detay sayfasına 'name' parametresiyle dön
+            return RedirectToAction("Details", new { name = name });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Leave(string name) // Parametre adı 'id' yerine 'name' oldu
+        {
+            if (Session["UserID"] == null) return RedirectToAction("Login", "Account");
+
+            string userId = Session["UserID"].ToString();
+
+            // Üyeliği bul ve pasife çek
+            var membership = db.COMMUNITY_MEMBERSHIP.FirstOrDefault(m => m.student_id == userId && m.community_name == name);
+
+            if (membership != null)
+            {
+                membership.is_active = false;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Details", new { name = name });
         }
 
         // GET: COMMUNITies/Create
@@ -42,8 +136,6 @@ namespace UniConn_CS.Controllers
         }
 
         // POST: COMMUNITies/Create
-        // Aşırı gönderim saldırılarından korunmak için bağlamak istediğiniz belirli özellikleri etkinleştirin. 
-        // Daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "community_name,description,creation_date")] COMMUNITY cOMMUNITY)
@@ -61,21 +153,13 @@ namespace UniConn_CS.Controllers
         // GET: COMMUNITies/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             COMMUNITY cOMMUNITY = db.COMMUNITY.Find(id);
-            if (cOMMUNITY == null)
-            {
-                return HttpNotFound();
-            }
+            if (cOMMUNITY == null) return HttpNotFound();
             return View(cOMMUNITY);
         }
 
         // POST: COMMUNITies/Edit/5
-        // Aşırı gönderim saldırılarından korunmak için bağlamak istediğiniz belirli özellikleri etkinleştirin. 
-        // Daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "community_name,description,creation_date")] COMMUNITY cOMMUNITY)
@@ -92,15 +176,9 @@ namespace UniConn_CS.Controllers
         // GET: COMMUNITies/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             COMMUNITY cOMMUNITY = db.COMMUNITY.Find(id);
-            if (cOMMUNITY == null)
-            {
-                return HttpNotFound();
-            }
+            if (cOMMUNITY == null) return HttpNotFound();
             return View(cOMMUNITY);
         }
 
