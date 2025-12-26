@@ -23,7 +23,7 @@ namespace UniConn_CS.Controllers
             // 2. Kişisel Akış Mantığı:
             // Önce kullanıcının üye olduğu (ve üyeliği aktif olan) toplulukların isimlerini çekiyoruz.
             var myCommunityNames = db.COMMUNITY_MEMBERSHIP
-                                     .Where(m => m.student_id == currentUserId && m.is_active == true)
+                                     //.Where(m => m.student_id == currentUserId && m.is_active == true)
                                      .Select(m => m.community_name)
                                      .ToList();
 
