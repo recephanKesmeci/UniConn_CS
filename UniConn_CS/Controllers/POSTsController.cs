@@ -52,7 +52,7 @@ namespace UniConn_CS.Controllers
         // GET: POSTs/Create
         public ActionResult Create()
         {
-            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description");
+            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "community_name");
             ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name");
             ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name");
             return View();
@@ -75,7 +75,7 @@ namespace UniConn_CS.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description", post.community_name);
+            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "community_name", post.community_name);
             ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name", post.event_reference_id);
             ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name", post.creator_student_id);
             return View(post);
