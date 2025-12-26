@@ -14,6 +14,17 @@ namespace UniConn_CS.Controllers
     {
         private UniConnDBEntities db = new UniConnDBEntities();
 
+        public bool isUserAuthorized(string community_name)
+        {
+            var userIDObj = Session["UserID"];
+            if (userIDObj == null) return false;
+            string userID = userIDObj.ToString();
+
+            return db.COMMUNITY_ROLE_ASSIGNMENT
+                .Where(ra => ra.student_id == userID && ra.community_name == community_name)
+                .Any(ra => ra.ROLE.can_create_events.GetValueOrDefault(false));
+        }
+
         // GET: POSTs
         public ActionResult Index()
         {
@@ -77,15 +88,15 @@ namespace UniConn_CS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            POST pOST = db.POST.Find(id);
-            if (pOST == null)
+            POST post = db.POST.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description", pOST.community_name);
-            ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name", pOST.event_reference_id);
-            ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name", pOST.creator_student_id);
-            return View(pOST);
+            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description", post.community_name);
+            ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name", post.event_reference_id);
+            ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name", post.creator_student_id);
+            return View(post);
         }
 
         // POST: POSTs/Edit/5
