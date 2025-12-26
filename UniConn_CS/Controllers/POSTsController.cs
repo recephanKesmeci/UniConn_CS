@@ -65,8 +65,11 @@ namespace UniConn_CS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "post_id,community_name,creator_student_id,creation_date,title,content,image_url,event_reference_id")] POST post)
         {
+            if (Session["UserID"] == null) return RedirectToAction("Login", "Account");
+
             post.post_id = new Random().Next();
             post.creation_date = DateTime.Now;
+            post.creator_student_id = Session["UserID"].ToString();
 
             if (ModelState.IsValid)
             {
