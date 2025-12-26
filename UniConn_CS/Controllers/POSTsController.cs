@@ -52,19 +52,22 @@ namespace UniConn_CS.Controllers
         // Daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "post_id,community_name,creator_student_id,creation_date,title,content,image_url,event_reference_id")] POST pOST)
+        public ActionResult Create([Bind(Include = "post_id,community_name,creator_student_id,creation_date,title,content,image_url,event_reference_id")] POST post)
         {
+            post.post_id = new Random().Next();
+            post.creation_date = DateTime.Now;
+
             if (ModelState.IsValid)
             {
-                db.POST.Add(pOST);
+                db.POST.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description", pOST.community_name);
-            ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name", pOST.event_reference_id);
-            ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name", pOST.creator_student_id);
-            return View(pOST);
+            ViewBag.community_name = new SelectList(db.COMMUNITY, "community_name", "description", post.community_name);
+            ViewBag.event_reference_id = new SelectList(db.EVENTS, "event_id", "event_name", post.event_reference_id);
+            ViewBag.creator_student_id = new SelectList(db.STUDENTS, "student_id", "first_name", post.creator_student_id);
+            return View(post);
         }
 
         // GET: POSTs/Edit/5
@@ -92,6 +95,8 @@ namespace UniConn_CS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "post_id,community_name,creator_student_id,creation_date,title,content,image_url,event_reference_id")] POST pOST)
         {
+            
+
             if (ModelState.IsValid)
             {
                 db.Entry(pOST).State = EntityState.Modified;
