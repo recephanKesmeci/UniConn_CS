@@ -138,16 +138,19 @@ namespace UniConn_CS.Controllers
         // POST: COMMUNITies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "community_name,description,creation_date")] COMMUNITY cOMMUNITY)
+        public ActionResult Create([Bind(Include = "community_name,description,creation_date")] COMMUNITY community)
         {
+            community.creation_date = DateTime.Now;
+            
+
             if (ModelState.IsValid)
             {
-                db.COMMUNITY.Add(cOMMUNITY);
+                db.COMMUNITY.Add(community);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cOMMUNITY);
+            return View(community);
         }
 
         // GET: COMMUNITies/Edit/5
