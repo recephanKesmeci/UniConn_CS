@@ -77,6 +77,28 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.event_id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.event_id }, new { @class = "my-btn" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "my-btn my-btn-gray" })
 </p>
+
+
+<style>
+    .my-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff; /* Blue */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .my-btn:hover {
+        background-color: #0056b3; /* Darker Blue */
+        color: white;
+    }
+
+    .my-btn-gray {
+        background-color: #6c757d; /* Gray */
+    }
+</style>

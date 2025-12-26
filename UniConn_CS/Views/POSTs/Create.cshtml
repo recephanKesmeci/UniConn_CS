@@ -70,7 +70,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="my-btn" />
             </div>
         </div>
     </div>
@@ -83,3 +83,25 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
+<style>
+    .my-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff; /* Blue */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+        .my-btn:hover {
+            background-color: #0056b3; /* Darker Blue */
+            color: white;
+        }
+
+    .my-btn-gray {
+        background-color: #6c757d; /* Gray */
+    }
+</style>

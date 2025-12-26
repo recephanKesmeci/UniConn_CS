@@ -11,7 +11,8 @@ namespace UniConn_CS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class POST
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,6 +24,11 @@ namespace UniConn_CS.Models
         public int post_id { get; set; }
         public string community_name { get; set; }
         public string creator_student_id { get; set; }
+
+        [Display(Name = "Event Date")]
+        // This format string is essential for the input to pick up the value
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
+        [DataType(DataType.DateTime)] // or DataType.Date
         public System.DateTime creation_date { get; set; }
         public string title { get; set; }
         public string content { get; set; }
