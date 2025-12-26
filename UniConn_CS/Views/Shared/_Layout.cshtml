@@ -7,6 +7,24 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .topbar {
+            display: flex;
+            justify-content: flex-end; /* This aligns content to the right */
+            align-items: center;
+            background: #f8f9fa; /* Light grey background */
+            padding: 10px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between name and icon */
+        }
+    </style>
+
 </head>
 <body>
 
@@ -34,10 +52,6 @@
                         <a href="/EVENTS/Index"><i class="fa-solid fa-calendar-check"></i> Events</a>
                     </li>
 
-                    @* 4. Post Akışı (Az önce düzelttiğimiz Home sayfasına gider) *@
-                    <li>
-                        <a href="/Home/Index"><i class="fa-solid fa-comments"></i> Feed</a>
-                    </li>
 
                     @* 5. Profil Sayfası (Yeni eklediğimiz Controller) *@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Profile" ? "active" : "")">
@@ -56,10 +70,8 @@
 
         <div id="content">
             <div class="topbar">
-                <div class="search-box">
-                    <input type="text" placeholder="Search communities, events...">
-                </div>
-                <div class="user-info">
+    
+                <div class="user-info" style="topbar">
                     @if (Session["UserID"] != null)
                     {
                         <span class="me-2 fw-bold">@Session["UserName"]</span>
@@ -78,4 +90,9 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
+
+
+
 </html>
+
